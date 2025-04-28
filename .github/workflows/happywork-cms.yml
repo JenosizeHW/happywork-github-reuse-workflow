@@ -9,6 +9,11 @@ on:
       cloudflare-page-name:
         required: true
         type: string
+    secrets:
+      CLOUDFLARE_API_TOKEN:
+        required: true
+      CLOUDFLARE_ACCOUNT_ID:
+        required: true
 
 jobs:
   deploy:
@@ -42,4 +47,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy --project-name=${{ inputs.cloudflare-page-name }} --branch ${{ inputs.branch }} ./
+          command: pages deploy --project-name=${{ inputs.cloudflare-page-name }} --branch ${{ inputs.branch }} ./out
