@@ -1,0 +1,31 @@
+name: Run test happywork-cms
+
+on:
+  workflow_call:
+
+jobs:
+  execute-run-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: CHECKOUT CODE
+        uses: actions/checkout@v4
+
+      - name: SETUP PNPM
+        uses: pnpm/action-setup@v3
+        id: pnpm-install
+        with:
+          version: 10
+          run_install: false
+
+      - name: INSTALL NODEJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: INSTALL DEPENDENCIES
+        run: pnpm i --frozen-lockfile
+
+      - name: RUN TEST
+        run: pnpm test

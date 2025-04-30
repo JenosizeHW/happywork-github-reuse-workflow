@@ -1,0 +1,48 @@
+name: Deploy happywork-cms to Cloudflare Pages
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
+      cloudflare-page-name:
+        required: true
+        type: string
+      artifact-name:
+        required: true
+        type: string
+    secrets:
+      CLOUDFLARE_API_TOKEN:
+        required: true
+      CLOUDFLARE_ACCOUNT_ID:
+        required: true
+      GH_TOKEN:
+        required: true
+
+jobs:
+  run-test:
+    uses: ./.github/workflows/happywork-cms/run-test.yaml
+
+  build:
+    needs: ["run-test"]
+    uses: ./.github/workflows/happywork-cms/build.yaml
+    with:
+      artifact-name: ${{ inputs.artifact-name }}
+
+  run-semantic-release:
+    needs: ["build"]
+    uses: ./.github/workflows/semantic-release.yaml
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  deploy:
+    needs: ["run-semantic-release"]
+    uses: ./.github/workflows/happywork-cms/deploy.yaml
+    with:
+      branch: ${{ inputs.branch }}
+      cloudflare-page-name: ${{ inputs.cloudflare-page-name }}
+      artifact-name: ${{ inputs.artifact-name }}
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

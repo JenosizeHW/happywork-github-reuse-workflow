@@ -1,0 +1,19 @@
+name: Run semantic release
+
+on:
+  workflow_call:
+    secrets:
+      GH_TOKEN:
+        required: true
+
+jobs:
+  execute-semantic-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: RUN SEMANTIC RELEASE
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          semantic_version: 19.0.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
