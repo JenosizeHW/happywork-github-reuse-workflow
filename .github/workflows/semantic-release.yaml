@@ -3,7 +3,7 @@ name: Run semantic release
 on:
   workflow_call:
     inputs:
-      GITHUB_TOKEN:
+      GH_TOKEN:
         required: true
         type: string
 
@@ -22,4 +22,4 @@ jobs:
         with:
           semantic_version: 19.0.5
         env:
-          GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ inputs.GH_TOKEN }}

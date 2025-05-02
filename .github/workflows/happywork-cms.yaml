@@ -17,7 +17,7 @@ on:
         required: true
       CLOUDFLARE_ACCOUNT_ID:
         required: true
-      GITHUB_TOKEN:
+      GH_TOKEN:
         required: true
 
 jobs:
@@ -34,7 +34,7 @@ jobs:
     needs: ["build"]
     uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/semantic-release.yaml@main
     with:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   deploy:
     needs: ["run-semantic-release"]
