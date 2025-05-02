@@ -12,13 +12,12 @@ on:
       artifact-name:
         required: true
         type: string
-      github-token:
-        required: true
-        type: string
     secrets:
       CLOUDFLARE_API_TOKEN:
         required: true
       CLOUDFLARE_ACCOUNT_ID:
+        required: true
+      GITHUB_TOKEN:
         required: true
 
 jobs:
@@ -35,7 +34,7 @@ jobs:
     needs: ["build"]
     uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/semantic-release.yaml@main
     with:
-      GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
     needs: ["run-semantic-release"]
