@@ -22,23 +22,23 @@ on:
 
 jobs:
   run-test:
-    uses: JenosizeHW/happywork-cms/.github/workflows/happywork-cms-test.yaml@main
+    uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/happywork-cms-test.yaml@main
 
   build:
     needs: ["run-test"]
-    uses: JenosizeHW/happywork-cms/.github/workflows/happywork-cms-build.yaml@main
+    uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/happywork-cms-build.yaml@main
     with:
       artifact-name: ${{ inputs.artifact-name }}
 
   run-semantic-release:
     needs: ["build"]
-    uses: JenosizeHW/happywork-cms/.github/workflows/semantic-release.yaml@main
+    uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/semantic-release.yaml@main
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   deploy:
     needs: ["run-semantic-release"]
-    uses: JenosizeHW/happywork-cms/.github/workflows/happywork-cms-deploy.yaml@main
+    uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/happywork-cms-deploy.yaml@main
     with:
       branch: ${{ inputs.branch }}
       cloudflare-page-name: ${{ inputs.cloudflare-page-name }}
