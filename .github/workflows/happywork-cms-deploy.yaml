@@ -40,11 +40,11 @@ jobs:
         id: get-cloudflare-secret
         uses: aws-actions/aws-secretsmanager-get-secrets@v1
         with:
-          secret-id: cloudflare/credentials
+          secret-ids: cloudflare/credentials
           parse-json: true
 
       - name: ECHO CLOUDFLARED API TOKEN
-        run: echo "CLOUDFLARE_API_TOKEN=${{ steps.get-cloudflare-secret.outputs.CLOUDFLARE_API_TOKEN }}"
+        run: echo "CLOUDFLARE_API_TOKEN=${{ steps.get-cloudflare-secret.outputs }}"
 
       - name: DEPLOY TO CLOUDFLARE PAGES
         uses: cloudflare/wrangler-action@v3
