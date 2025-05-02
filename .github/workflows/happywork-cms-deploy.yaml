@@ -40,7 +40,7 @@ jobs:
         id: get-cloudflare-secret
         uses: aws-actions/aws-secretsmanager-get-secrets@v1
         with:
-          secret-ids: cloudflare/credentials
+          secret-ids: cloudflare-credentials
           parse-json-secrets: true
 
       - name: ECHO CLOUDFLARED API TOKEN
