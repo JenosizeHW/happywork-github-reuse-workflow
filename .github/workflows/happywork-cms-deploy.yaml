@@ -40,15 +40,15 @@ jobs:
         id: get-cloudflare-secret
         uses: aws-actions/aws-secretsmanager-get-secrets@v1
         with:
-          secret-ids: cloudflare-credentials
-          parse-json-secrets: true
+          secret-id: cloudflare-credentials
+          parse-json: true
 
-      - name: ECHO CLOUDFLARED API TOKEN
-        run: echo "CLOUDFLARE_API_TOKEN=${{ steps.get-cloudflare-secret.outputs.cloudflare-credentials.CLOUDFLARE_API_TOKEN }}"
+      - name: CLOUDFLARED API TOKEN
+        run: echo "CLOUDFLARE_API_TOKEN=${{ steps.get-cloudflare-secret.outputs.CLOUDFLARE_API_TOKEN }}"
 
       - name: DEPLOY TO CLOUDFLARE PAGES
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ steps.get-cloudflare-secret.outputs.cloudflare-credentials.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ steps.get-cloudflare-secret.outputs.cloudflare-credentials.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ steps.get-cloudflare-secret.outputs.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ steps.get-cloudflare-secret.outputs.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy --project-name=${{ inputs.cloudflare-page-name }} --branch ${{ inputs.branch }} ./out
