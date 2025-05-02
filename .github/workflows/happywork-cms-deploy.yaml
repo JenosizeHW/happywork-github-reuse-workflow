@@ -44,10 +44,7 @@ jobs:
           parse-json: true
 
       - name: ECHO CLOUDFLARED API TOKEN
-        run: echo "CLOUDFLARE_API_TOKEN=${{ steps.get-cloudflare-secret.outputs.CLOUDFLARE_API_TOKEN }}"
-
-      - name: ECHO CLOUDFLARE ACCOUNT ID
-        run: echo "CLOUDFLARE_ACCOUNT_ID=${{ steps.get-cloudflare-secret.outputs.CLOUDFLARE_ACCOUNT_ID }}"
+        run: echo "CLOUDFLARE_API_TOKEN=${{ steps.get-cloudflare-secret.outputs }}"
 
       - name: DEPLOY TO CLOUDFLARE PAGES
         uses: cloudflare/wrangler-action@v3
