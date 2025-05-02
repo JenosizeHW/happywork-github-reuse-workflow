@@ -12,6 +12,9 @@ on:
       artifact-name:
         required: true
         type: string
+      aws-account-id:
+        required: true
+        type: string
     secrets:
       GH_TOKEN:
         required: true
@@ -33,6 +36,7 @@ jobs:
       branch: ${{ inputs.branch }}
       cloudflare-page-name: ${{ inputs.cloudflare-page-name }}
       artifact-name: ${{ inputs.artifact-name }}
+      aws-account-id: ${{ inputs.aws-account-id }}
 
   run-semantic-release:
     needs: ["deploy"]
