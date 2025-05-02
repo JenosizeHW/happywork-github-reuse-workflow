@@ -13,9 +13,7 @@ on:
         required: true
         type: string
     secrets:
-      CLOUDFLARE_API_TOKEN:
-        required: true
-      CLOUDFLARE_ACCOUNT_ID:
+      GH_TOKEN:
         required: true
 
 jobs:
@@ -28,13 +26,16 @@ jobs:
     with:
       artifact-name: ${{ inputs.artifact-name }}
 
-  deploy:
+  run-semantic-release:
     needs: ["build"]
+    uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/semantic-release.yaml@main
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  deploy:
+    needs: ["run-semantic-release"]
     uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/happywork-cms-deploy.yaml@main
     with:
       branch: ${{ inputs.branch }}
       cloudflare-page-name: ${{ inputs.cloudflare-page-name }}
       artifact-name: ${{ inputs.artifact-name }}
-    secrets:
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -12,11 +12,6 @@ on:
       cloudflare-page-name:
         required: true
         type: string
-    secrets:
-      CLOUDFLARE_API_TOKEN:
-        required: true
-      CLOUDFLARE_ACCOUNT_ID:
-        required: true
 
 jobs:
   execute-deploy:
@@ -29,9 +24,12 @@ jobs:
           name: ${{ inputs.artifact-name }}
           path: out
 
-      - name: DEPLOY TO CLOUDFLARE PAGES
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy --project-name=${{ inputs.cloudflare-page-name }} --branch ${{ inputs.branch }} ./out
+      - name: Get CLOUDFLARED API TOKEN
+        run: echo "input branch=${{ inputs.branch }} input cloudflare-page-name=${{ inputs.cloudflare-page-name }} input artifact-name=${{ inputs.artifact-name }}"
+
+      # - name: DEPLOY TO CLOUDFLARE PAGES
+      #   uses: cloudflare/wrangler-action@v3
+      #   with:
+      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      #     command: pages deploy --project-name=${{ inputs.cloudflare-page-name }} --branch ${{ inputs.branch }} ./out
