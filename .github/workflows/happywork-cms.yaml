@@ -33,7 +33,7 @@ jobs:
   run-semantic-release:
     needs: ["build"]
     uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/semantic-release.yaml@main
-    with:
+    secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   deploy:

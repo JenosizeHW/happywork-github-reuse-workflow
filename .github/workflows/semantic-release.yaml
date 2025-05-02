@@ -2,10 +2,9 @@ name: Run semantic release
 
 on:
   workflow_call:
-    inputs:
+    secrets:
       GH_TOKEN:
         required: true
-        type: string
 
 jobs:
   execute-semantic-release:
@@ -22,4 +21,4 @@ jobs:
         with:
           semantic_version: 19.0.5
         env:
-          GITHUB_TOKEN: ${{ inputs.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
