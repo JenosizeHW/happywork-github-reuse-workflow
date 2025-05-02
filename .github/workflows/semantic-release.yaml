@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: CHECKOUT CODE
+        uses: actions/checkout@v4
+
       - name: RUN SEMANTIC RELEASE
         uses: cycjimmy/semantic-release-action@v4
         with:
