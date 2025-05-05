@@ -38,9 +38,10 @@ jobs:
 
       - name: GET CLOUDFLARE SECRETS FROM AWS SECRETS MANAGER
         id: get-cloudflare-secret
-        uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
         with:
-          secret-ids: cloudflare-credentials
+          secret-ids: |
+            cloudflare-credentials
           parse-json-secrets: true
 
       - name: CLOUDFLARED API TOKEN
