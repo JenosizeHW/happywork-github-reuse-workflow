@@ -15,9 +15,6 @@ on:
       aws-account-id:
         required: true
         type: string
-    secrets:
-      GH_TOKEN:
-        required: true
 
 jobs:
   run-test:
@@ -37,9 +34,3 @@ jobs:
       cloudflare-page-name: ${{ inputs.cloudflare-page-name }}
       artifact-name: ${{ inputs.artifact-name }}
       aws-account-id: ${{ inputs.aws-account-id }}
-
-  run-semantic-release:
-    needs: ["deploy"]
-    uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/semantic-release.yaml@main
-    secrets:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
