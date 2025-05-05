@@ -2,6 +2,10 @@ name: Run test happywork-cms
 
 on:
   workflow_call:
+    inputs:
+      api-url:
+        required: true
+        type: string
 
 jobs:
   execute-run-test:
@@ -23,6 +27,9 @@ jobs:
         with:
           node-version: 22
           cache: "pnpm"
+
+      - name: CREATE ENV FILE
+        run: echo "NEXT_PUBLIC_API_URL=${{ inputs.api-url }}" > .env
 
       - name: INSTALL DEPENDENCIES
         run: pnpm i --frozen-lockfile

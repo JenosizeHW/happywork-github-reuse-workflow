@@ -22,6 +22,8 @@ on:
 jobs:
   run-test:
     uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/happywork-cms-test.yaml@main
+    with:
+      api-url: ${{ inputs.api-url }}
 
   build:
     needs: ["run-test"]
