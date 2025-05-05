@@ -34,7 +34,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ inputs.aws-account-id }}:role/github-action-frontend
-          aws-region: ap-southeast-7
+          aws-region: ap-southeast-2
 
       - name: GET CLOUDFLARE SECRETS FROM AWS SECRETS MANAGER
         id: get-cloudflare-secret
