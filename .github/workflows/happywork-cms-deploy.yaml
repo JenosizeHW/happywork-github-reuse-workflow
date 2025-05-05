@@ -57,7 +57,8 @@ jobs:
 
       - name: DEPLOY TO CLOUDFLARE PAGES
         uses: cloudflare/wrangler-action@v3
+        env:
+          CLOUDFLARE_TOKEN: ${{ steps.get-cloudflare-secret.outputs.api-token }}
         with:
-          apiToken: ${{ steps.get-cloudflare-secret.outputs.api-token }}
-          accountId: ${{ steps.get-cloudflare-secret.outputs.account-id }}
+          accountId: "7137e150e5d96dcee67dfd207b982192"
           command: pages deploy --project-name=${{ inputs.cloudflare-page-name }} --branch ${{ inputs.branch }} ./out
