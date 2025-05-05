@@ -34,6 +34,9 @@ jobs:
       - name: INSTALL DEPENDENCIES
         run: pnpm i --frozen-lockfile
 
+      - name: CREATE ENV FILE
+        run: echo "NEXT_PUBLIC_API_URL=${{ inputs.api-url }}" > .env
+
       - name: BUILD PROJECT
         run: pnpm build
 
