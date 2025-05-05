@@ -36,19 +36,28 @@ jobs:
           role-to-assume: arn:aws:iam::${{ inputs.aws-account-id }}:role/github-action-frontend
           aws-region: ap-southeast-7
 
-      - name: GET CLOUDFLARE SECRETS FROM AWS SECRETS MANAGER
+      - name: Get CLOUDFLARE API TOKEN
         id: get-cloudflare-secret
-        uses: aws-actions/aws-secretsmanager-get-secrets@v2
-        with:
-          secret-ids: cloudflare-credentials
-          parse-json-secrets: true
+        run: |
+          SECRETS=$(aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:ap-southeast-7:${{ inputs.aws-account-id }}:secret:cloudflare-credentials --query SecretString --output text --region ap-southeast-7)
+          CLOUDFLARE_API_TOKEN=$(echo $SECRETS | jq .CLOUDFLARE_API_TOKEN | tr -d '"')
+          CLOUDFLARE_ACCOUNT_ID=$(echo $SECRETS | jq .CLOUDFLARE_ACCOUNT_ID | tr -d '"')
+          echo "::add-mask::$CLOUDFLARE_API_TOKEN"
+          echo "::add-mask::$CLOUDFLARE_ACCOUNT_ID"
+          echo "api-token=$CLOUDFLARE_API_TOKEN" >> $GITHUB_OUTPUT
+          echo "account-id=$CLOUDFLARE_ACCOUNT_ID" >> $GITHUB_OUTPUT
 
-      - name: CLOUDFLARED API TOKEN
-        run: echo "CLOUDFLARE_API_TOKEN=${{ steps.get-cloudflare-secret.outputs.CLOUDFLARE_API_TOKEN }}"
+      - name: CLOUDFLARE API TOKEN
+        run: |
+          echo "CLOUDFLARE_API_TOKEN=${{ steps.get-cloudflare-secret.outputs.api-token }}"
+
+      - name: CLOUDFLARE ACCOUNT ID
+        run: |
+          echo "CLOUDFLARE_ACCOUNT_ID=${{ steps.get-cloudflare-secret.outputs.account-id }}"
 
       - name: DEPLOY TO CLOUDFLARE PAGES
         uses: cloudflare/wrangler-action@v3
         with:
-          apiToken: ${{ steps.get-cloudflare-secret.outputs.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ steps.get-cloudflare-secret.outputs.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ steps.get-cloudflare-secret.outputs.api-token }}
+          accountId: ${{ steps.get-cloudflare-secret.outputs.account-id }}
           command: pages deploy --project-name=${{ inputs.cloudflare-page-name }} --branch ${{ inputs.branch }} ./out
