@@ -15,6 +15,9 @@ on:
       aws-account-id:
         required: true
         type: string
+      api-url:
+        required: true
+        type: string
 
 jobs:
   run-test:
@@ -25,6 +28,7 @@ jobs:
     uses: JenosizeHW/happywork-github-reuse-workflow/.github/workflows/happywork-cms-build.yaml@main
     with:
       artifact-name: ${{ inputs.artifact-name }}
+      api-url: ${{ inputs.api-url }}
 
   deploy:
     needs: ["build"]
@@ -34,3 +38,4 @@ jobs:
       cloudflare-page-name: ${{ inputs.cloudflare-page-name }}
       artifact-name: ${{ inputs.artifact-name }}
       aws-account-id: ${{ inputs.aws-account-id }}
+      api-url: ${{ inputs.api-url }}

@@ -6,6 +6,9 @@ on:
       artifact-name:
         required: true
         type: string
+      api-url:
+        required: true
+        type: string
 
 jobs:
   execute-build:
