@@ -38,4 +38,3 @@ jobs:
       cloudflare-page-name: ${{ inputs.cloudflare-page-name }}
       artifact-name: ${{ inputs.artifact-name }}
       aws-account-id: ${{ inputs.aws-account-id }}
-      api-url: ${{ inputs.api-url }}
