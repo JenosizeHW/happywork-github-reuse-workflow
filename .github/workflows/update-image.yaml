@@ -1,0 +1,39 @@
+name: Update image
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        required: true
+        type: string
+      tag:
+        required: true
+        type: string
+      env:
+        required: true
+        type: string
+      branch:
+        required: true
+        type: string
+    secrets:
+      GH_PAT:
+        required: true
+
+jobs:
+  change-image-tag-and-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Set Image in Terragrunt
+        run: |
+          sed -i -E 's|tag(\s*)\=\s\"(.*)"|tag\1= "${{ inputs.tag }}"|g' ./${{ inputs.path }}
+
+      - name: Commit files
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'ci: 🎡 update image ${{ inputs.env }} with ${{ inputs.tag }}'
+          branch: ${{ inputs.branch }}
