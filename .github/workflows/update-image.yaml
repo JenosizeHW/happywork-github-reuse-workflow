@@ -30,7 +30,7 @@ jobs:
 
       - name: Set Image in Terragrunt
         run: |
-          sed -i -E 's|tag(\s*)\=\s\"(.*)"|tag\1= "${{ inputs.tag }}"|g' ./${{ inputs.path }}
+          sed -i -E 's|tag:\s"(.*)"|tag: "${{ inputs.tag }}"|g' ./${{ inputs.path }}
 
       - name: Commit files
         uses: stefanzweifel/git-auto-commit-action@v5
