@@ -1,0 +1,58 @@
+name: Deploy to k8s
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        required: true
+        type: string
+      cluster:
+        required: true
+        type: string
+      aws-region:
+        required: true
+        type: string
+      role-to-assume:
+        required: true
+        type: string
+      role-session-name:
+        required: true
+        type: string
+      role-duration-seconds:
+        required: false
+        type: number
+        default: 1200
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ inputs.aws-region }}
+          role-to-assume: ${{ inputs.role-to-assume }}
+          role-session-name: ${{ inputs.role-session-name }}
+          role-duration-seconds: ${{ inputs.role-duration-seconds }}
+
+      - name: Setup SOPS
+        uses: nhedger/setup-sops@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+          helm plugin install https://github.com/jkroepke/helm-secrets
+
+      - name: Update kube config
+        run: aws eks update-kubeconfig --name ${{ inputs.cluster }} --region ${{ inputs.aws-region }}
+
+      - name: Deploy with Helm
+        run: |
+          helm secrets upgrade happywork-api infrastructure/${{ inputs.env }}/helm-chart/happywork-api \
+           -f infrastructure/${{ inputs.env }}/values.yaml \
+           -f infrastructure/${{ inputs.env }}/secrets.yaml \
+           --install --namespace ${inputs.env}
