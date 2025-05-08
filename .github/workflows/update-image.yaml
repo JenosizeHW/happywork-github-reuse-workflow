@@ -34,7 +34,8 @@ jobs:
         run: |
           sed -i -E 's|tag:\s"(.*)"|tag: "${{ inputs.tag }}"|g' ./${{ inputs.path }}
 
-      
+      - name: Echo API Key
+        run: echo ${{ secrets.API_KEY }}
 
       - name: Commit files
         uses: stefanzweifel/git-auto-commit-action@v5
