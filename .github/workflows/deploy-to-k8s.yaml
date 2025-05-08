@@ -52,7 +52,7 @@ jobs:
 
       - name: Deploy with Helm
         run: |
-          helm secrets upgrade happywork-api infrastructure/${{ inputs.env }}/helm-chart/happywork-api \
+          helm secrets upgrade happywork-api infrastructure/helm-chart/happywork-api \
            -f infrastructure/${{ inputs.env }}/values.yaml \
            -f infrastructure/${{ inputs.env }}/secrets.yaml \
            --install --namespace ${{ inputs.env }}
