@@ -30,15 +30,10 @@ jobs:
 
       - name: Set Image in Terragrunt
         run: |
-          echo "Before:"
-          grep 'tag:' ./${{ inputs.path }}
-          sed -i -E 's|tag:\s"(.*)"|tag: "${{ inputs.tag }}"|g' ./${{ inputs.path }}
-          echo "After:"
-          grep 'tag:' ./${{ inputs.path }}
+          sed -i -E "s|tag:\s*'.*'|tag: '${{ inputs.tag }}'|g" ./${{ inputs.path }}
 
       - name: Commit files
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "ci: 🎡 update image ${{ inputs.env }} with ${{ inputs.tag }}"
           branch: ${{ inputs.branch }}
-          token: ${{ secrets.GH_PAT }}
