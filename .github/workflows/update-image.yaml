@@ -35,6 +35,5 @@ jobs:
       - name: Commit files
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'ci: 🎡 update image ${{ inputs.env }} with ${{ inputs.tag }}'
+          commit_message: "ci: 🎡 update image ${{ inputs.env }} with ${{ inputs.tag }}"
           branch: ${{ inputs.branch }}
-          token: ${{ secrets.GH_PAT }}
