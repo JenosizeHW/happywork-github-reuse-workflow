@@ -10,7 +10,8 @@ on:
         required: true
         type: string
     secrets:
-      required: false
+      mySecrets:
+        required: false
 
 jobs:
   execute-build:
