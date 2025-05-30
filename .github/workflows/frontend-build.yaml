@@ -6,9 +6,11 @@ on:
       artifact-name:
         required: true
         type: string
-      api-url:
+      env:
         required: true
         type: string
+    secrets:
+      required: false
 
 jobs:
   execute-build:
@@ -35,7 +37,9 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: CREATE ENV FILE
-        run: echo "NEXT_PUBLIC_API_URL=${{ inputs.api-url }}" > .env
+        run: |
+          echo -e "${{ inputs.env }}" >> $GITHUB_ENV
+          echo -e "${{ secrets.mySecrets }}" >> $GITHUB_ENV
 
       - name: BUILD PROJECT
         run: pnpm build
